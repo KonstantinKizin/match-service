@@ -12,7 +12,7 @@
  ```
 
 
-## Build and Run service
+## Build and Run service on port 8080 
 ```
  1) mvn clean package
  2) java -jar target/service-match-0.0.1-SNAPSHOT.jar

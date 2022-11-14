@@ -18,6 +18,9 @@ public class MatchMapper {
     private final DateTimeProvider dateTimeProvider;
 
     public MatchDTO map(Match source) {
+        if (source == null) {
+            return null;
+        }
         return MatchDTO.builder().
                 id(source.getId())
                 .awayTeam(teamMapper.map(source.getAwayTeam()))
@@ -30,6 +33,9 @@ public class MatchMapper {
     }
 
     public Match map(MatchDTO source) {
+        if (source == null) {
+            return null;
+        }
         return Match.builder()
                 .id(source.getId())
                 .homeTeam(teamMapper.map(source.getHomeTeam()))
@@ -41,6 +47,9 @@ public class MatchMapper {
     }
 
     public Match map(CreateMatchRequest request) {
+        if (request == null) {
+            return null;
+        }
         return Match.builder()
                 .homeTeam(new Team(request.getHomeTeamId(), null))
                 .awayTeam(new Team(request.getAwayTeamId(), null))
@@ -51,6 +60,9 @@ public class MatchMapper {
     }
 
     public MatchSearchObject map(GetMatchRequest source) {
+        if (source == null) {
+            return null;
+        }
         MatchSearchObject target = new MatchSearchObject();
         target.setTeamID(source.getTeamID());
         if (BooleanUtils.isTrue(source.getUpcomingOnly())) {
