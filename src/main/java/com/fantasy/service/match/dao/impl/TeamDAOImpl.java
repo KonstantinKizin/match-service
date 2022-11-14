@@ -13,17 +13,12 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class TeamDAOImpl implements TeamDAO {
     private static final String SELECT_TEAMS_QUERY = "SELECT id, name FROM teams;";
-    private static final String SELECT_WINNERS_QUERY = "SELECT DISTINCT(t.id, t.name) FROM teams t\n" +
-            " JOIN matches m\n" +
-            " ON (t.id = m.away_id AND m.away_score > m.home_score)\n" +
-            "       OR (t.id = m.home_id AND m.home_id > m.away_score);";
-
+    private static final String SELECT_WINNERS_QUERY = "SELECT DISTINCT (t.*) FROM teams t JOIN matches m ON t.id = m.winner_id;\n";
     private static final String UPDATE_QUERY = "UPDATE teams SET name = ? WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Team> mapper;

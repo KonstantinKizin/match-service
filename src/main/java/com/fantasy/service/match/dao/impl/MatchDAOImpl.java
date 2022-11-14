@@ -41,8 +41,8 @@ public class MatchDAOImpl implements MatchDAO {
             " (SELECT name FROM teams t WHERE t.id = home_id) AS home_name, " +
             " (SELECT name FROM teams t WHERE t.id = away_id) AS away_name" +
             " FROM matches m";
-    private static final String INSERT_QUERY = "INSERT INTO matches(start_date, home_id, home_score, away_id, away_score)" +
-            " VALUES(?, ?, ?, ?, ?)";
+    private static final String INSERT_QUERY = "INSERT INTO matches(start_date, home_id, home_score, away_id, away_score, winner_id)" +
+            " VALUES(?, ?, ?, ?, ?, ?)";
     private static final String DELETE_MATCH_QUERY = "DELETE FROM matches WHERE id = ?";
     private static final String UPDATE_START_DATE_QUERY = "UPDATE matches" +
             " SET start_date = ?" +
@@ -50,6 +50,7 @@ public class MatchDAOImpl implements MatchDAO {
             " AND home_score = ?" +
             " AND away_id = ?" +
             " AND away_score = ?" +
+            " AND winner_id = ?" +
             " WHERE id = ?";
 
     private final RowMapper<Match> mapper;
@@ -150,6 +151,12 @@ public class MatchDAOImpl implements MatchDAO {
 
         if (match.getAwayScore() != null) {
             ps.setLong(5, match.getAwayScore());
+        } else {
+            ps.setNull(5, Types.TINYINT);
+        }
+
+        if (match.getWinnerTeam() != null) {
+            ps.setLong(6, match.getWinnerTeam().getId());
         } else {
             ps.setNull(5, Types.TINYINT);
         }
