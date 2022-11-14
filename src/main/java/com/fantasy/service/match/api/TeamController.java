@@ -7,22 +7,23 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping(path = "/v1/teams")
 @AllArgsConstructor
 public class TeamController {
     private final TeamFacade teamFacade;
 
-    @GetMapping(path = "/v1/teams")
-    public GetTeamResponse getTeams(GetTeamRequest request){
+    @GetMapping
+    public GetTeamResponse getTeams(GetTeamRequest request) {
         return teamFacade.getTeams(request);
     }
 
-    @PutMapping("/v1/teams")
-    public TeamDTO update(@RequestBody TeamDTO request){
+    @PutMapping
+    public TeamDTO update(@RequestBody TeamDTO request) {
         return teamFacade.update(request);
     }
 
