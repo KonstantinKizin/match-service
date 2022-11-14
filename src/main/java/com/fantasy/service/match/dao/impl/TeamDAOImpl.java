@@ -1,10 +1,12 @@
 package com.fantasy.service.match.dao.impl;
 
 import com.fantasy.service.match.dao.TeamDAO;
+import com.fantasy.service.match.dao.exception.EntityConstraintException;
 import com.fantasy.service.match.dao.exception.EntityNotFoundException;
 import com.fantasy.service.match.domain.Team;
 import com.fantasy.service.match.domain.TeamSearchObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -34,14 +36,18 @@ public class TeamDAOImpl implements TeamDAO {
 
     @Override
     public Team update(Team team) {
-        int affectedRows = jdbcTemplate.update(UPDATE_QUERY, ps -> {
-            ps.setString(1, team.getName());
-            ps.setLong(2, team.getId());
-        });
-        if (affectedRows == 0) {
-            throw new EntityNotFoundException(team.getId(), Team.class);
+        try {
+            int affectedRows = jdbcTemplate.update(UPDATE_QUERY, ps -> {
+                ps.setString(1, team.getName());
+                ps.setLong(2, team.getId());
+            });
+            if (affectedRows == 0) {
+                throw new EntityNotFoundException(team.getId(), Team.class);
+            }
+            return team;
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityConstraintException("Name should not be null");
         }
-        return team;
     }
 
     @Component

@@ -133,7 +133,7 @@ public class MatchDAOImpl implements MatchDAO {
     private PreparedStatementCreator buildUpdateStatementCreator(Match match) {
         return (connection) -> {
             PreparedStatement ps = getMatchPreparedStatement(connection, match, UPDATE_START_DATE_QUERY);
-            ps.setLong(6, match.getId());
+            ps.setLong(7, match.getId());
             return ps;
         };
     }
@@ -158,7 +158,7 @@ public class MatchDAOImpl implements MatchDAO {
         if (match.getWinnerTeam() != null) {
             ps.setLong(6, match.getWinnerTeam().getId());
         } else {
-            ps.setNull(5, Types.TINYINT);
+            ps.setNull(6, Types.TINYINT);
         }
 
         return ps;
